@@ -16,74 +16,75 @@ class Commandearive extends StatefulWidget {
 class _CommandeariveState extends State<Commandearive> {
   @override
   Widget build(BuildContext context) {
-    return
-      SafeArea(
-          child: Scaffold(
-            body: Column(
-              children: [
-                SizedBox(height: 70.h,) ,
-                Container(
-                  height: 200.h,
-                  width: 300.w,
-                  margin: EdgeInsets.symmetric(horizontal: 57.w),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("images/commande est là.png"),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 70.h,) ,
-                SizedBox(
-                  width: 350.w,
-                  child: AutoSizeText(
-                    '''Votre commande est là !
-Veuillez la collecter''',
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    //  minFontSize: 22.sp,
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      color: Colors.black,
-                      fontFamily: 'Poppins',
-                      //  fontWeight: FontWeight.bold ,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height:150.h,
-                ),
-                SizedBox(
-                  width: 200.w,
-                  height: 70.h,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Classe1.classe=Home();
-                      Main_Page.currentindex=0;
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Main_Page()));
-                    },
-                    child: AutoSizeText(
-                      "C'est parti",
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.sp,
-                        fontFamily: 'Poppins',
-                        // fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.grey,
-                        primary: Color(0xffffda82),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        )),
-                  ),
-                ),
-
-
-              ],
+    return SafeArea(
+        child: Scaffold(
+      body: Column(
+        children: [
+          SizedBox(
+            height: 70.h,
+          ),
+          Container(
+            height: 200.h,
+            width: 300.w,
+            margin: EdgeInsets.symmetric(horizontal: 57.w),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/commande est là.png"),
+              ),
             ),
-          ));
+          ),
+          SizedBox(
+            height: 70.h,
+          ),
+          SizedBox(
+            width: 350.w,
+            child: AutoSizeText(
+              '''Votre commande est là !
+Veuillez la collecter''',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              //  minFontSize: 22.sp,
+              style: TextStyle(
+                fontSize: 22.sp,
+                color: Colors.black,
+                fontFamily: 'Poppins',
+                //  fontWeight: FontWeight.bold ,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 150.h,
+          ),
+          SizedBox(
+            width: 200.w,
+            height: 70.h,
+            child: ElevatedButton(
+              onPressed: () {
+                Classe1.classe = Home();
+                Main_Page.currentindex = 0;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Main_Page()));
+              },
+              child: AutoSizeText(
+                "C'est parti",
+                maxLines: 1,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.sp,
+                  fontFamily: 'Poppins',
+                  // fontWeight: FontWeight.bold,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.grey,
+                  primary: Color(0xffffda82),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )),
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 }

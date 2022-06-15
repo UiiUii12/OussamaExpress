@@ -51,7 +51,8 @@ class _onBoarding extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(
-      Colors.white,);
+      Colors.white,
+    );
     return SafeArea(
         child: Stack(
       children: [
@@ -83,7 +84,7 @@ class _onBoarding extends State<OnBoarding> {
                       alignment: AlignmentDirectional.topStart,
                       children: <Widget>[
                         Container(
-                         // margin: EdgeInsets.only(bottom: 40.h),
+                          // margin: EdgeInsets.only(bottom: 40.h),
                           child: Row(
                             //mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -106,8 +107,8 @@ class _onBoarding extends State<OnBoarding> {
                     Container(
                       color: Colors.transparent,
                       child: SizedBox(
-                         width: 200.w,
-                         height: 60.h,
+                        width: 200.w,
+                        height: 60.h,
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushReplacement(
@@ -123,7 +124,6 @@ class _onBoarding extends State<OnBoarding> {
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.bold,
                             ),
-
                           ),
                           style: ElevatedButton.styleFrom(
                               shadowColor: Colors.grey,
@@ -134,7 +134,9 @@ class _onBoarding extends State<OnBoarding> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 40.h,),
+                    SizedBox(
+                      height: 40.h,
+                    ),
                     Container(
                       width: 110.w,
                       height: 50.h,
@@ -155,7 +157,7 @@ class _onBoarding extends State<OnBoarding> {
                             ),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.r))),
-                        onPressed: () async{
+                        onPressed: () async {
                           await AuthService().signeInAnon();
                           Navigator.push(
                               context,
@@ -164,15 +166,16 @@ class _onBoarding extends State<OnBoarding> {
                         },
                       ),
                     ),
-                    SizedBox(height: 70.h,)
+                    SizedBox(
+                      height: 70.h,
+                    )
                   ],
                 )
               ],
             ),
           ),
-         )
-        ],
-      )
-    );
+        )
+      ],
+    ));
   }
 }

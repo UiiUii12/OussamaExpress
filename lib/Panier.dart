@@ -34,14 +34,18 @@ class _PanierState extends State<Panier> {
                     width: 0.w,
                   ),
                   TextButton(
-                    onPressed: (){
-                      Main_Page.currentindex=0;
-                      Classe1.classe=Home();
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Main_Page()));},
-                    child:Icon(Icons.arrow_back,
-                    size: 28.sp,
-                    color: Colors.black,
-                  ),),
+                    onPressed: () {
+                      Main_Page.currentindex = 0;
+                      Classe1.classe = Home();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Main_Page()));
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      size: 28.sp,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -73,8 +77,8 @@ class _PanierState extends State<Panier> {
             height: 60.h,
             child: ElevatedButton(
               onPressed: () {
-                Classe1.classe=Home();
-                Main_Page.currentindex=0;
+                Classe1.classe = Home();
+                Main_Page.currentindex = 0;
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Login()));
               },

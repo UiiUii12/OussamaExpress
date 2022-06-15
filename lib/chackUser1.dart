@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'auth/user.dart';
 
-
 class Wrapper2 extends StatelessWidget {
   const Wrapper2({Key? key}) : super(key: key);
 
@@ -12,9 +11,8 @@ class Wrapper2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
 
-    if (user!.phone == null|| user.phone=="") {
+    if (user!.phone == null || user.phone == "") {
       return Profile();
-
     } else {
       return Profile_Infos();
     }

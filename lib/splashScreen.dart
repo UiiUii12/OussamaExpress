@@ -23,7 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(
-        Color(0xffFEE4E4),);
+      Color(0xffFEE4E4),
+    );
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xffFEE4E4),
@@ -34,11 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: (MediaQuery.of(context).size.height) * (1 / 4),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                        'images/logo1.png'
-                    )
-                ),
+                image: DecorationImage(image: AssetImage('images/logo1.png')),
               ),
             ),
             SizedBox(
@@ -53,12 +50,13 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+
   void navigate(ConnectivityResult result) {
     result != ConnectivityResult.none
         ? Timer(
-        Duration(milliseconds: 1500),
+            Duration(milliseconds: 1500),
             () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Wrapper())))
+                context, MaterialPageRoute(builder: (context) => Wrapper())))
         : Container();
   }
 }

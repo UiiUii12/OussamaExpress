@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:clientapp/database/database.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'Commande_arrive-bientot.dart';
+import 'Page.dart';
 import 'adress.dart';
 import 'auth/user.dart';
 import 'client/panier.dart';
@@ -17,13 +19,14 @@ class Complet_Order extends StatefulWidget {
   @override
   State<Complet_Order> createState() => _Complet_OrderState();
 }
+
 double long = 0, lat = 0;
+
 class _Complet_OrderState extends State<Complet_Order> {
   bool servicestatus = false;
   bool haspermission = false;
   late LocationPermission permission;
   late Position position;
-
 
   late StreamSubscription<Position> positionStream;
   checkGps() async {
@@ -61,19 +64,13 @@ class _Complet_OrderState extends State<Complet_Order> {
   }
 
   getLocation() async {
-
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
-DatabaseService.long=position.longitude;
-DatabaseService.lat=position.latitude;
+    DatabaseService.long = position.longitude;
+    DatabaseService.lat = position.latitude;
     long = position.longitude;
     lat = position.latitude;
-
-    setState(() {
-      //refresh UI
-    });
-
     LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high, //accuracy of the location data
       distanceFilter: 100, //minimum distance (measured in meters) a
@@ -81,12 +78,12 @@ DatabaseService.lat=position.latitude;
     );
 
     StreamSubscription<Position> positionStream =
-    Geolocator.getPositionStream(locationSettings: locationSettings)
-        .listen((Position position) {
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
       print(position.longitude); //Output: 80.24599079
       print(position.latitude); //Output: 29.6593457
-      DatabaseService.long=position.longitude;
-      DatabaseService.lat=position.latitude;
+      DatabaseService.long = position.longitude;
+      DatabaseService.lat = position.latitude;
       long = position.longitude;
       lat = position.latitude;
 
@@ -95,6 +92,7 @@ DatabaseService.lat=position.latitude;
       });
     });
   }
+
   getLocation2() async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -104,8 +102,6 @@ DatabaseService.lat=position.latitude;
     long = position.longitude;
     lat = position.latitude;
 
-
-
     LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high, //accuracy of the location data
       distanceFilter: 100, //minimum distance (measured in meters) a
@@ -113,15 +109,13 @@ DatabaseService.lat=position.latitude;
     );
 
     StreamSubscription<Position> positionStream =
-    Geolocator.getPositionStream(locationSettings: locationSettings)
-        .listen((Position position) {
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
       print(position.longitude); //Output: 80.24599079
       print(position.latitude); //Output: 29.6593457
 
       long = position.longitude;
       lat = position.latitude;
-
-
     });
   }
 
@@ -129,151 +123,173 @@ DatabaseService.lat=position.latitude;
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
     print(DatabaseService.list);
-    return
-      SafeArea(child: Scaffold(
-        body: Column(
-          children: [
-            GestureDetector(
+    return SafeArea(
+        child: Scaffold(
+      body: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Main_Page() ));
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 15.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    Icon(
+                      Icons.arrow_back,
+                      size: 28.sp,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 40.h,
+          ),
+          Container(
+            height: 200.h,
+            width: 300.w,
+            margin: EdgeInsets.symmetric(horizontal: 57.w),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/Location.png"),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 50.h,
+          ),
+          SizedBox(
+            width: 350.w,
+            child: AutoSizeText(
+              'Veuillez activer votre location pour continuer.',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22.sp,
+                color: Colors.black,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 81.h,
+          ),
+          SizedBox(
+            width: 220.w,
+            height: 70.h,
+            child: ElevatedButton(
+              onPressed: () async {
+                var dt = DateTime.now();
+                await checkGps();
+                Location location;
+                location = Location(
+                    latitude: DatabaseService.lat!,
+                    longitude: DatabaseService.long!,
+                    timestamp: dt);
+                List<Panier>? list = DatabaseService.list;
 
-              onTap: () {
-                Navigator.pop(context);
+                await DatabaseService(uid: user!.uid).writeCommande(location);
+
+                for (int i = 0; i < list!.length; i++) {
+                  await DatabaseService(uid: user.uid).deletePanier(list[i]);
+                  await DatabaseService(uid: user.uid).UpdatePanierMoin();
+                }
+                Schedule();
               },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Icon(
-                        Icons.arrow_back,
-                        size: 28.sp,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 40.h,) ,
-            Container(
-              height: 200.h,
-              width: 300.w,
-              margin: EdgeInsets.symmetric(horizontal: 57.w),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("images/Location.png"),
-                ),
-              ),
-            ),
-            SizedBox(height: 50.h,) ,
-            SizedBox(
-              width: 350.w,
               child: AutoSizeText(
-                '''Veuillez activer votre location pour continuer.''',
-                maxLines: 2,
-                textAlign: TextAlign.center,
+                'Activer Location',
+                maxLines: 1,
                 style: TextStyle(
-                  fontSize: 22.sp,
                   color: Colors.black,
+                  fontSize: 17.sp,
                   fontFamily: 'Poppins',
-                  //  fontWeight: FontWeight.bold ,
                 ),
               ),
+              style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.grey,
+                  primary: Color(0xffffda82),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )),
             ),
-            SizedBox(
-              height: 81.h,
-            ),
-            SizedBox(
-              width: 220.w,
-              height: 70.h,
-              child: ElevatedButton(
-
-                onPressed: () async {
-                  var dt = DateTime.now();
-                  await checkGps();
-                  Location location;
-
-                print(lat);
-                print("hawliv");
-                print(DatabaseService.lat);
-                  location=Location(latitude: DatabaseService.lat!, longitude: DatabaseService.long!, timestamp:dt);
-                 List<Panier>? list=DatabaseService.list;
-
-                   await DatabaseService(uid: user!.uid).writeCommande(location);
-
-                        for(int i =0;i<list!.length;i++){
-                        await  DatabaseService(uid: user.uid).deletePanier(list[i]);
-                        await DatabaseService(uid: user.uid).UpdatePanierMoin();}
-
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) =>
-                            CommandeariveBeintot()));
-                                },
-
-
-                child: AutoSizeText(
-                  'Activer Location',
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.sp,
-                    fontFamily: 'Poppins',
-                    // fontWeight: FontWeight.bold,
-                  ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          SizedBox(
+            width: 220.w,
+            height: 70.h,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Adress()));
+              },
+              child: AutoSizeText(
+                'Insérer une adresse',
+                maxLines: 1,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 17.sp,
+                  fontFamily: 'Poppins',
                 ),
-                style: ElevatedButton.styleFrom(
-                    shadowColor: Colors.grey,
-                    primary: Color(0xffffda82),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
               ),
+              style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.grey,
+                  primary: Color(0xffffda82),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )),
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            SizedBox(
-              width: 220.w,
-              height: 70.h,
-              child: ElevatedButton(
+          ),
+        ],
+      ),
+    ));
+  }
 
-                onPressed: ()  {
+  void Schedule() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final FlutterLocalNotificationsPlugin notifications =
+        FlutterLocalNotificationsPlugin();
+    WidgetsFlutterBinding.ensureInitialized();
+    var initialization = AndroidInitializationSettings('@mipmap/pic');
+    final InitializationSettings initializationSystem =
+        InitializationSettings(android: initialization);
+    await notifications.initialize(initializationSystem,
+        onSelectNotification: (payload) async {
+      if (payload != null) {
+        debugPrint('notification payload: ' + payload);
+      }
+      await Navigator.push(
+        context,
+        MaterialPageRoute<void>(builder: (context) => Main_Page()),
+      );
+    });
 
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            Adress()));},
-                child: AutoSizeText(
-                  'Insérer une adresse',
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.sp,
-                    fontFamily: 'Poppins',
-                    // fontWeight: FontWeight.bold,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                    shadowColor: Colors.grey,
-                    primary: Color(0xffffda82),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
-              ),
-            ),
-
-          ],
-        ),
-      ));
+    var notifcation = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'channel id',
+        'channel name',
+        channelDescription: 'channel description',
+        importance: Importance.max,
+        priority: Priority.max,
+        ticker: 'ticker',
+         visibility: NotificationVisibility.public,
+      ),
+      iOS: IOSNotificationDetails(),
+    );
   }
 }

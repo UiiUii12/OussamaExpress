@@ -15,29 +15,29 @@ import 'auth/user.dart';
 import 'database/database.dart';
 import 'database/restdata.dart';
 
-
-
 class Food extends StatefulWidget {
   final Plat plat;
-  final   restaurant ;
-  final image ;
-  final name ;
-  const Food( {Key? key,required this.plat,this.restaurant, this.image, this.name}) : super(key: key);
+  final restaurant;
+  final image;
+  final name;
+  const Food(
+      {Key? key, required this.plat, this.restaurant, this.image, this.name})
+      : super(key: key);
   @override
   _FoodState createState() => _FoodState();
 }
 
 class _FoodState extends State<Food> {
-  String text="";
-  String foodImage="";
-  String platImage="";
-  bool value=DatabaseService.exist;
+  String text = "";
+  String foodImage = "";
+  String platImage = "";
+  bool value = DatabaseService.exist;
   bool isPressed = false;
   int _counter = 1;
   num prixUnitaire = 250;
   var foodName = '';
   var description = '';
-  int o=0;
+  int o = 0;
 
   num prixTotal(num prixUnitaire) {
     return prixUnitaire * _counter;
@@ -50,7 +50,6 @@ class _FoodState extends State<Food> {
   }
 
   bool getInitial() {
-
     return isPressed;
   }
 
@@ -59,46 +58,46 @@ class _FoodState extends State<Food> {
       _counter > 1 ? _counter-- : print('bzf eelik');
     });
   }
-  getImage(){
-    RestauService().getplatImage(widget.plat.categore) ;
-   RestauService().getfoodImage(widget.plat.categore);
+
+  getImage() {
+    RestauService().getplatImage(widget.plat.categore);
+    RestauService().getfoodImage(widget.plat.categore);
   }
+
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<MyUser?>(context);
-if(o==0) {
-  isPressed = DatabaseService.exist;
-}
-    foodName=widget.plat.nom;
-    prixUnitaire=widget.plat.prix;
-    description=widget.plat.descreption;
+    if (o == 0) {
+      isPressed = DatabaseService.exist;
+    }
+    foodName = widget.plat.nom;
+    prixUnitaire = widget.plat.prix;
+    description = widget.plat.descreption;
     setState(() {
       getImage();
-      foodImage= RestauService.foodImage;
-      platImage=RestauService.plasImage;
+      foodImage = RestauService.foodImage;
+      platImage = RestauService.plasImage;
       print(foodImage);
     });
-;
-
-
+    ;
 
     return SafeArea(
         child: Scaffold(
-
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
             GestureDetector(
               onTap: () {
-                Classe1.classe= Click_restaurant(restaurant_id: widget.restaurant, image: widget.image, name: widget.name,);
-                Main_Page.currentindex=0 ;
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Main_Page() ));
-                            },
+                Classe1.classe = Click_restaurant(
+                  restaurant_id: widget.restaurant,
+                  image: widget.image,
+                  name: widget.name,
+                );
+                Main_Page.currentindex = 0;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Main_Page()));
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -130,21 +129,24 @@ if(o==0) {
                     ),
                     GestureDetector(
                       onTap: () {
-                        setState((){
+                        setState(() {
                           if (isPressed == false) {
                             //isPressed = getInitial();
-                            DatabaseService(uid: user!.uid).updateFavoris(widget.plat);
+                            DatabaseService(uid: user!.uid)
+                                .updateFavoris(widget.plat);
                             isPressed = true;
                             o++;
 
-                           DatabaseService(uid: user.uid).UpdateFavorisPlus();
-                          } else{
-                            DatabaseService(uid: user!.uid).deletFavoris(widget.plat);
+                            DatabaseService(uid: user.uid).UpdateFavorisPlus();
+                          } else {
+                            DatabaseService(uid: user!.uid)
+                                .deletFavoris(widget.plat);
                             isPressed = false;
                             o++;
 
-                           DatabaseService(uid: user.uid).UpdateFavorisMoin();
-                        }});
+                            DatabaseService(uid: user.uid).UpdateFavorisMoin();
+                          }
+                        });
                       },
                       child: Icon(
                         isPressed
@@ -194,119 +196,122 @@ if(o==0) {
                     SizedBox(
                       width: 10.w,
                     ),
-                    foodImage == 'images/burger.png' ?
-                    Stack(
-                      children: [
-                        Container(
-                          height: 120.h,
-                          width: 110.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(platImage),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 20.h, horizontal:6.w),
-                          height: 80.h,
-                          width: 90.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(foodImage),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ) : foodImage== 'images/pizza.png' ?
-                    Stack(
-                      children: [
-                        Container(
-                          height: 110.h,
-                          width: 110.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(platImage),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 6.h, horizontal: 0.5.w),
-                          height: 100.h,
-                          width: 105.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(foodImage),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ) : foodImage =='images/chicken.png' ?
-                    Stack(
-                      children: [
-                        Container(
-                          height: 110.h,
-                          width: 110.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(platImage),
-                                fit: BoxFit.cover
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 25.h, horizontal: 5.w),
-                          height: 50.h,
-                          width: 55.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(foodImage),
-                                fit: BoxFit.cover
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 18.h, horizontal: 27.w),
-                          height: 50.h,
-                          width: 55.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(foodImage),
-                                fit: BoxFit.cover
-                            ),
-                          ),
-                        ),
-                      ],
-                    ) : foodImage == 'images/tacos.png' ?
-                    Stack(
-                      children: [
-                        Container(
-                          height: 110.h,
-                          width: 111.5.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(platImage),
-                                fit: BoxFit.cover
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 0.h, horizontal: 5.w),
-                          height: 90.h,
-                          width: 100.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(foodImage),
-                                fit: BoxFit.cover
-                            ),
-                          ),
-                        ),
-                      ],
-                    ) : Container(height: 110.h, width: 110.w,) ,
-              /*      Stack(
+                    foodImage == 'images/burger.png'
+                        ? Stack(
+                            children: [
+                              Container(
+                                height: 120.h,
+                                width: 110.w,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(platImage),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 20.h, horizontal: 6.w),
+                                height: 80.h,
+                                width: 90.w,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(foodImage),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : foodImage == 'images/pizza.png'
+                            ? Stack(
+                                children: [
+                                  Container(
+                                    height: 110.h,
+                                    width: 110.w,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(platImage),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 6.h, horizontal: 0.5.w),
+                                    height: 100.h,
+                                    width: 105.w,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(foodImage),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : foodImage == 'images/chicken.png'
+                                ? Stack(
+                                    children: [
+                                      Container(
+                                        height: 110.h,
+                                        width: 110.w,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(platImage),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 25.h, horizontal: 5.w),
+                                        height: 50.h,
+                                        width: 55.w,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(foodImage),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 18.h, horizontal: 27.w),
+                                        height: 50.h,
+                                        width: 55.w,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(foodImage),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : foodImage == 'images/tacos.png'
+                                    ? Stack(
+                                        children: [
+                                          Container(
+                                            height: 110.h,
+                                            width: 111.5.w,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(platImage),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 0.h, horizontal: 5.w),
+                                            height: 90.h,
+                                            width: 100.w,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(foodImage),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Container(
+                                        height: 110.h,
+                                        width: 110.w,
+                                      ),
+                    /*      Stack(
                       children: [
                         Container(
                           height: 150.h,
@@ -345,7 +350,8 @@ if(o==0) {
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Padding(
                             padding: EdgeInsets.only(left: 7),
                             child: AutoSizeText(
@@ -426,8 +432,8 @@ if(o==0) {
                                 child: FloatingActionButton(
                                   heroTag: "bottom1",
                                   onPressed: _decrementCounter,
-                                  child:
-                                      Icon(Icons.remove, color: Color(0xffF54749)),
+                                  child: Icon(Icons.remove,
+                                      color: Color(0xffF54749)),
                                   backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.r),
@@ -448,7 +454,8 @@ if(o==0) {
                                 child: FloatingActionButton(
                                   heroTag: "bottom two",
                                   onPressed: _incrementCounter,
-                                  child: Icon(Icons.add, color: Color(0xffF54749)),
+                                  child:
+                                      Icon(Icons.add, color: Color(0xffF54749)),
                                   backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.r),
@@ -565,15 +572,15 @@ if(o==0) {
               height: 60.h,
               child: ElevatedButton(
                 onPressed: () {
-                  Classe2.classe=PanierW();
-                  Classe1.classe=Home();
-                  Main_Page.currentindex=1;
+                  Classe2.classe = PanierW();
+                  Classe1.classe = Home();
+                  Main_Page.currentindex = 1;
 
-                  DatabaseService(uid: user!.uid).updatePanier(widget.plat, _counter, text);
+                  DatabaseService(uid: user!.uid)
+                      .updatePanier(widget.plat, _counter, text);
                   DatabaseService(uid: user.uid).UpdatePanierPlus();
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Main_Page()));
-
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Main_Page()));
                 },
                 child: AutoSizeText(
                   'Ajouter au panier',
@@ -625,8 +632,8 @@ if(o==0) {
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: TextFormField(
-              onChanged: (value){
-                text=value;
+              onChanged: (value) {
+                text = value;
               },
               minLines: 1,
               maxLines: 5,
@@ -637,7 +644,7 @@ if(o==0) {
                 counterText: '',
                 contentPadding: EdgeInsets.all(10.0.h),
                 border: InputBorder.none,
-                hintText:'Insérer votre message',
+                hintText: 'Insérer votre message',
                 hintStyle: TextStyle(
                   fontSize: 15.sp,
                   fontFamily: 'Poppins',

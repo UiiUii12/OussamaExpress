@@ -3,7 +3,7 @@ import 'package:clientapp/Page.dart';
 import 'package:clientapp/classe1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:clientapp/Food.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'Login.dart';
@@ -35,14 +35,18 @@ class _FavorisState extends State<Favoris> {
                     width: 0.w,
                   ),
                   TextButton(
-                    onPressed: (){
-                      Main_Page.currentindex=0;
-                    Classe1.classe=Home();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Main_Page()));},
-                    child:Icon(Icons.arrow_back,
+                    onPressed: () {
+                      Main_Page.currentindex = 0;
+                      Classe1.classe = Home();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Main_Page()));
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
                       size: 28.sp,
                       color: Colors.black,
-                    ),),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -74,10 +78,11 @@ class _FavorisState extends State<Favoris> {
             height: 60.h,
             child: ElevatedButton(
               onPressed: () {
-              //  Classe1.classe=Home();
-              //  Main_Page.currentindex=0;
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Login()));////////////////////////////////////////
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Login())); ////////////////////////////////////////
               },
               child: AutoSizeText(
                 'Connectez vous',
