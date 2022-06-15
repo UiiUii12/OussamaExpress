@@ -171,7 +171,6 @@ class _LoginState extends State<Login> {
                                                       width: 200.w,
                                                       child: Center(
                                                         child: TextFormField(
-                                                          readOnly: !read,
                                                           textAlign:
                                                               TextAlign.left,
                                                           enabled: true,
@@ -250,7 +249,7 @@ class _LoginState extends State<Login> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   _textFieldOTP(
-                                                      read: read,
+
                                                       nemero: 0,
                                                       first: true,
                                                       last: false),
@@ -258,7 +257,7 @@ class _LoginState extends State<Login> {
                                                     width: 8.w,
                                                   ),
                                                   _textFieldOTP(
-                                                      read: read,
+
                                                       nemero: 1,
                                                       first: false,
                                                       last: false),
@@ -266,7 +265,6 @@ class _LoginState extends State<Login> {
                                                     width: 8.w,
                                                   ),
                                                   _textFieldOTP(
-                                                      read: read,
                                                       nemero: 2,
                                                       first: false,
                                                       last: false),
@@ -274,7 +272,7 @@ class _LoginState extends State<Login> {
                                                     width: 8.w,
                                                   ),
                                                   _textFieldOTP(
-                                                      read: read,
+
                                                       nemero: 3,
                                                       first: false,
                                                       last: false),
@@ -282,7 +280,7 @@ class _LoginState extends State<Login> {
                                                     width: 8.w,
                                                   ),
                                                   _textFieldOTP(
-                                                      read: read,
+
                                                       nemero: 4,
                                                       first: false,
                                                       last: false),
@@ -290,7 +288,6 @@ class _LoginState extends State<Login> {
                                                     width: 8.w,
                                                   ),
                                                   _textFieldOTP(
-                                                      read: read,
                                                       nemero: 5,
                                                       first: false,
                                                       last: true),
@@ -382,7 +379,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget _textFieldOTP(
-      {bool? first, last, required int nemero, required bool read}) {
+      {bool? first, last, required int nemero,}) {
     return Container(
       height: 45.h,
       width: 40.w,
@@ -412,7 +409,7 @@ class _LoginState extends State<Login> {
             }
           },
           showCursor: false,
-          readOnly: read,
+          //readOnly: read,
           textAlign: TextAlign.center,
           textAlignVertical: TextAlignVertical.center,
           style: TextStyle(
